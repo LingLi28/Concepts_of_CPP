@@ -30,6 +30,10 @@ struct storage {
     std::vector<std::string> names;
 };
 
+struct Person {
+    number_t number;
+    std::string name;
+};
 
 
 // functions for dealing with the contact list storage - this is your contact list API.
@@ -64,7 +68,7 @@ std::string to_string(const storage& contacts);
  */
 bool remove(storage& contacts, std::string_view name);
 
-
+//bool compare(Person& p1, Person& p2);
 /**
  * Sort the contact list in-place by name.
  */
