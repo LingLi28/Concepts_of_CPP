@@ -68,7 +68,7 @@ std::string to_string(const storage& contacts);
  */
 bool remove(storage& contacts, std::string_view name);
 
-//bool compare(Person& p1, Person& p2);
+bool compare(const Person& p1, const Person& p2);
 /**
  * Sort the contact list in-place by name.
  */

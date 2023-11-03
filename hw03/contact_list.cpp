@@ -11,7 +11,7 @@
 /**
  * Given a contact storage, create a new contact entry by name and number.
  */
-bool add(contact_list::storage& contacts, std::string_view name, contact_list::number_t number) {
+bool contact_list::add(contact_list::storage& contacts, std::string_view name, contact_list::number_t number) {
 
 	if (name == "") {
 		return false;
@@ -31,7 +31,7 @@ bool add(contact_list::storage& contacts, std::string_view name, contact_list::n
 /**
  * Given a contact storage, how many contacts are currently stored?
  */
-size_t size(const contact_list::storage& contacts) {
+size_t contact_list::size(const contact_list::storage& contacts) {
 
 	return contacts.numbers.size();
 }
@@ -39,22 +39,23 @@ size_t size(const contact_list::storage& contacts) {
 /**
  * Fetch a contact number from storage given a name.
  */
-contact_list::number_t get_number_by_name(contact_list::storage& contacts, std::string_view name) {
+contact_list::number_t contact_list::get_number_by_name(contact_list::storage& contacts, std::string_view name) {
 
 	std::vector<std::string>::iterator t;
 	t = std::find(contacts.names.begin(), contacts.names.end(), std::string(name));
 	if (t ==  contacts.names.end()) {
 		return -1;
 	}
-	auto pos = std::distance(t, contacts.names.begin());
-	return contacts.numbers.at(pos);
+	auto pos = std::distance(contacts.names.begin(), t);
+	// std::cout << std::to_string(pos) << std::endl;
+	return contacts.numbers[pos];
 }
 
 
 /**
  * Return a string representing the contact list.
  */
-std::string to_string(const contact_list::storage& contacts) {
+std::string contact_list::to_string(const contact_list::storage& contacts) {
 	size_t size_contacts = contacts.numbers.size();
 	std::string res_string{""};
 	for (size_t i = 0; i < size_contacts; ++i){
@@ -67,7 +68,7 @@ std::string to_string(const contact_list::storage& contacts) {
 /**
  * Remove a contact by name from the contact list.
  */
-bool remove(contact_list::storage& contacts, std::string_view name) {
+bool contact_list::remove(contact_list::storage& contacts, std::string_view name) {
 
 	std::vector<std::string>::iterator t;
 	t = std::find(contacts.names.begin(), contacts.names.end(), std::string(name));
@@ -75,7 +76,7 @@ bool remove(contact_list::storage& contacts, std::string_view name) {
 		return false;
 	}
 	std::cout << "test" << std::endl;
-	auto pos = std::distance(t, contacts.names.begin());
+	auto pos = std::distance(contacts.names.begin(), t);
 
 	contacts.numbers.erase(contacts.numbers.begin() + pos);
 	contacts.names.erase(contacts.names.begin() + pos);
@@ -84,7 +85,7 @@ bool remove(contact_list::storage& contacts, std::string_view name) {
 }
 
 
-bool compare(const contact_list::Person& p1, const contact_list::Person& p2) {
+bool contact_list::compare(const contact_list::Person& p1, const contact_list::Person& p2) {
 
 		return p1.name < p2.name;
 };	
@@ -92,7 +93,7 @@ bool compare(const contact_list::Person& p1, const contact_list::Person& p2) {
 /**
  * Sort the contact list in-place by name.
  */
-void sort(contact_list::storage& contacts) {
+void contact_list::sort(contact_list::storage& contacts) {
 
 	size_t size_contacts = contacts.numbers.size();
 	std::vector<contact_list::Person> people;
@@ -112,7 +113,7 @@ void sort(contact_list::storage& contacts) {
 /**
  * Fetch a contact name from storage given a number.
  */
-std::string get_name_by_number(contact_list::storage& contacts, contact_list::number_t number) {
+std::string contact_list::get_name_by_number(contact_list::storage& contacts, contact_list::number_t number) {
 
 	std::vector<contact_list::number_t>::iterator t;
 
@@ -121,7 +122,7 @@ std::string get_name_by_number(contact_list::storage& contacts, contact_list::nu
 		return "";
 	}
 
-	auto pos = std::distance(t, contacts.numbers.begin());
+	auto pos = std::distance(contacts.numbers.begin(), t);
 	return contacts.names.at(pos);
 
 }
