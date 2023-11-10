@@ -37,7 +37,7 @@ void fill_contacts(contact_list::storage &s) {
 TEST_CASE("contact_number") {
     contact_list::storage s;
     CHECK_EQ(contact_list::size(s), 0);
-
+    
     fill_contacts(s);
     CHECK_EQ(contact_list::size(s), 7);
     CHECK_EQ(contact_list::get_number_by_name(s, "A"), 10);

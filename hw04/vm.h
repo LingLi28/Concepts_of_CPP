@@ -86,6 +86,9 @@ struct vm_state {
      */
     bool debug = false;
 
+    std::ostringstream out{""};
+    code_t code;
+
     // if you need to store more vm state, add it here!
 };
 
