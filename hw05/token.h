@@ -17,6 +17,16 @@ struct Identifier {
 
 // TODO: all the token types go here
 
+struct From {};
+
+struct Comma {};
+
+struct Asterisks {};
+
+struct Semicolon {};
+
+
+
 } // namespace token
 
 /// Simple class representing a token for our simplified SQL select clause. A token be any of the
@@ -25,7 +35,7 @@ class Token {
 public:
     /// TODO: Add all types of token to the variant
     using token_type =
-        std::variant<token::Select, token::Identifier>;
+        std::variant<token::Select, token::Identifier, token::From, token::Comma, token::Asterisks, token::Semicolon>;
 
     // Disallow default construction, this doesn't really make sense, what should be a default
     // token? Maybe Unknown, but we don't have that so just disallow it
