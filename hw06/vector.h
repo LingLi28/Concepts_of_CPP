@@ -3,6 +3,7 @@
 #include <ostream>
 #include <utility>
 #include <vector>
+#include <cmath>
 
 namespace linalg {
 
