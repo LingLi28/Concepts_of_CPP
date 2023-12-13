@@ -1,7 +1,9 @@
 #pragma once
 
 #include <cstdint>
-
+#include <stdexcept>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include "connection.h"
 #include "filedescriptor.h"
 
@@ -47,7 +49,7 @@ public:
     /// as well. The responsibility is transferred to the Connection.
     ///
     /// Check out: inet_addr(3), connect(3), gethostbyname(3), htons(3)
-    Connection connect(std::string destination, uint16_t port);
+    Connection connect(const std::string destination, uint16_t port);
 
     /// Connect to localhost on the given port, see the other overload
     Connection connect(uint16_t port);

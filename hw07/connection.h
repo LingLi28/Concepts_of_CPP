@@ -4,6 +4,8 @@
 #include <istream>
 #include <span>
 #include <string_view>
+#include <unistd.h>
+#include <sys/socket.h>
 
 namespace net {
 /// Light wrapper around the libc send(3)-function. Should return the value returned by send(3), and
