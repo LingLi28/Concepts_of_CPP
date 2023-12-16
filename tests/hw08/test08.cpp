@@ -629,9 +629,9 @@ TEST_CASE("Filesystem") {
 
     // still, nothing but this function should keep the filesystem pointer alive.
     CHECK_EQ(fs.use_count(), 1);
-
-
 }
+
+
 TEST_CASE("File_rename") {
     auto fs = std::make_shared<Filesystem>();
     fs->register_file("thesis.org", std::make_shared<Document>("very science"));
