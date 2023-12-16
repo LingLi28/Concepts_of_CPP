@@ -71,6 +71,7 @@ protected:
      * Since we can create a file hardlink, this content may be shared.
      */
     FileContent content;
+    std::string type;
 
     // TODO additional member variables
 
@@ -79,5 +80,6 @@ private:
      * The file name.
      * Is empty as long as the file is not registered in a filesystem.
      */
+    std::weak_ptr<Filesystem> filesystem; 
     std::string name;
 };

@@ -14,6 +14,8 @@ public:
 
   Image(FileContent &&content = {}, resolution_t res = {0, 0});
   // TODO: Implement inherited member functions
+  std::string_view get_type() const override;
+  size_t get_raw_size() const override;
 
   resolution_t get_resolution() const;
 
