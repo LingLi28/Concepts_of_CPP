@@ -1,7 +1,7 @@
 variables:
-    CURRENT_HW: "hw09"
-    CURRENT_TEST: "testhw09"
-    TEST_HASH_EXPECTED: "994b7c7c261b392085f91398cb9a5eaa3688189939cdae45cc5cfea5a25cf259"
+    CURRENT_HW: "hw10"
+    CURRENT_TEST: "testhw10"
+    TEST_HASH_EXPECTED: "4e96ec9e6cb9d572cc6a6bea7dd96e90706d6938a4c82dee7da0ccfb88b68af8"
 
 
 
