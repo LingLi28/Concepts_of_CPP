@@ -2,7 +2,6 @@
 
 #include <optional>
 #include <string_view>
-#include <cctype>
 
 namespace bencode {
 // TODO: Implement int parsing for the bencode fromat
@@ -40,7 +39,7 @@ consteval std::optional<int> parse_int(std::string_view str) {
     }
 
     for (; index < str.size() - 1; ++index) {
-        if (std::isdigit(str[index])) {
+        if (str[index] >= '0' && str[index] <= '9') {
             result = result * 10 + (str[index] - '0');
         } else {
             return std::nullopt;  // Found non-digit character
@@ -76,7 +75,7 @@ consteval std::optional<std::string_view> parse_byte_string(std::string_view str
 
     int length = 0;
     for (size_t i = 0; i < colon_pos; ++i) {
-        if (!std::isdigit(str[i])) {
+        if (!(str[i] >= '0' && str[i] <= '9')) {
             return std::nullopt;  // Invalid length encoding
         }
         length = length * 10 + (str[i] - '0');
