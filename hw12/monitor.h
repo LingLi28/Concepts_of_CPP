@@ -17,16 +17,20 @@ public:
     FileMonitor(const std::string &targetpath,
                 std::chrono::milliseconds interval = std::chrono::milliseconds(1'000),
                 const std::string &logfile = "log.txt");
+    void checkForChanges();
 
     /**
      * Run the monitor.
      * Check the directory every `interval` until `timeout`.
      * Log file changes using the logger.
      */
+
     void start(std::chrono::seconds timeout = std::chrono::minutes{1});
 
 private:
+    std::filesystem::path targetPath_;
     mutable Logger logger;
     std::chrono::duration<int, std::milli> interval;
+    std::unordered_map<std::string, std::filesystem::file_time_type> fileMap;
     // TODO: Do you need anything here?
 };

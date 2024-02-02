@@ -2,11 +2,29 @@
 
 #include <ctime>
 #include <chrono>
+#include <iostream>
 
 
-
-Logger::Logger(const std::string &filename) : file{} {
+Logger::Logger(const std::string &filename){
     std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::filesystem::path path_cur = std::filesystem::current_path();
+    std::filesystem::path path_file = path_cur/filename;
+
+    if(std::filesystem::exists(path_file)) {
+        // Backup the existing file
+        std::cout << "log file exits, backup and log a new one.\n";
+        std::filesystem::path backupFilePath = path_file;
+        backupFilePath += "_old";
+
+        //Remove any existing backupfile
+        std::filesystem::remove(backupFilePath);
+
+        //Rename the current file to the backup file
+        std::filesystem::rename(path_file, backupFilePath);
+    }
+
+    file = std::ofstream(filename);
+
     file << "Commencing logging for directory: "
          << "TODO: insert current path here.."
          << std::endl

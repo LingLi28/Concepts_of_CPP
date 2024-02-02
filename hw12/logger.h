@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <string>
+#include <filesystem>
+#include <iostream>
 
 enum class status {
     added,
